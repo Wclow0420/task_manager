@@ -1,5 +1,8 @@
 import sqlite3
 import datetime
+import shutil
+import os
+import streamlit as st
 
 def connect_db():
     return sqlite3.connect("projects.db")
@@ -16,6 +19,23 @@ def get_project_name_by_id(project_id):
     return None  # Return None if no project is found
 
 
+
+# Function to handle the download of the file
+def download_db():
+    db_path = 'projects.db'
+    # Check if the file exists
+    if os.path.exists(db_path):
+        with open(db_path, "rb") as f:
+            # Returning file as download
+            st.download_button(
+                label="Download projects.db",
+                data=f,
+                file_name="projects.db",
+                mime="application/octet-stream"
+            )
+    else:
+        st.error("Database file not found!")
+        
 def create_tables():
     conn = connect_db()
     cursor = conn.cursor()
