@@ -34,7 +34,7 @@ def commit_and_push_db():
         subprocess.run(['git', 'config', '--global', 'user.name', 'Wclow0420'])
         subprocess.run(['git', 'config', '--global', 'user.email', 'wclow0420@gmail.com'])
 
-        subprocess.run(['git', 'remote', 'set-url', 'origin', f'https://github.com/Wclow0420/task_manager.git'])
+        subprocess.run(['git', 'remote', 'set-url', 'origin', f'https://{username}:{personal_access_token}@github.com/Wclow0420/task_manager.git'])
         subprocess.run(['git', 'init'])  # Initialize git if not done already
         subprocess.run(['git', 'remote', 'add', 'origin', repo_url])  # Add remote repository
         
