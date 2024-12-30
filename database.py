@@ -30,7 +30,8 @@ def download_and_commit_db():
     db_path = 'projects.db'
     repo_path = "D:/Personal Detail/Project/crypto-task/task_manager"  # Local clone path of your GitHub repository
     username = "Wclow0420"
-    personal_access_token = "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"
+    personal_access_token = "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"
+
 
     # Use the PAT in the repo_url
     repo_url = f"https://{username}:{personal_access_token}@github.com/Wclow0420/task_manager.git"  # GitHub URL with PAT for authentication
