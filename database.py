@@ -21,10 +21,10 @@ def get_project_name_by_id(project_id):
 
 
 
-# Function to handle the download of the file
 def download_and_commit_db():
     db_path = 'projects.db'
-    repo_path = "https://Wclow0420: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@github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
+    repo_path = "https://github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
+    personal_access_token = "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" # Use an environment variable for your PAT
 
     if os.path.exists(db_path):
         # Provide download option
@@ -39,7 +39,18 @@ def download_and_commit_db():
         # Commit and push to GitHub
         if st.button("Commit and Push to GitHub"):
             try:
-                repo = git.Repo(repo_path)
+                # Clone the repository (if not already cloned)
+                if not os.path.exists("repo"):
+                    git.Repo.clone_from(
+                        f"https://{personal_access_token}@github.com/Wclow0420/task_manager.git", 
+                        "repo"
+                    )
+                
+                # Navigate to the cloned repository
+                repo = git.Repo("repo")
+                
+                # Copy the database file to the repo
+                os.replace(db_path, os.path.join("repo", db_path))
                 
                 # Stage changes
                 repo.git.add(db_path)
@@ -48,9 +59,9 @@ def download_and_commit_db():
                 commit_message = st.text_input("Enter commit message:", value="Updated projects.db")
                 if commit_message:
                     repo.index.commit(commit_message)
-                
-                    # Set up remote repository and push
-                    origin = repo.remote(name='origin')
+                    
+                    # Push to the remote repository
+                    origin = repo.remote(name="origin")
                     origin.push()
                     
                     st.success("projects.db has been committed and pushed to GitHub!")
