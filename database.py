@@ -38,7 +38,7 @@ def download_and_commit_db():
             )
 
         # Commit and push to GitHub
-        if st.button("Commit and Push to GitHub"):
+        if st.button("Commit GitHub"):
             try:
                 repo = git.Repo(repo_path)
                 
