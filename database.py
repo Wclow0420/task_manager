@@ -23,7 +23,7 @@ def get_project_name_by_id(project_id):
 def commit_and_push_db():
     db_path = 'projects.db'  # Path to your local projects.db file
     username = "Wclow0420"  # Your GitHub username
-    personal_access_token = "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"  # Your GitHub PAT
+    personal_access_token = "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"  # Your GitHub PAT
 
     # Check if the projects.db file exists
     if os.path.exists(db_path):
@@ -33,8 +33,8 @@ def commit_and_push_db():
         # Initialize a new Git repository or use an existing one
         subprocess.run(['git', 'config', '--global', 'user.name', 'Wclow0420'])
         subprocess.run(['git', 'config', '--global', 'user.email', 'wclow0420@gmail.com'])
-        subprocess.run(['git', 'remote', '-v'])
-        subprocess.run(['git', 'remote', 'set-url', 'origin', 'https://github.com/Wclow0420/task_manager.git'])
+
+        subprocess.run(['git', 'remote', 'set-url', 'origin', f'https://github.com/Wclow0420/task_manager.git'])
         subprocess.run(['git', 'init'])  # Initialize git if not done already
         subprocess.run(['git', 'remote', 'add', 'origin', repo_url])  # Add remote repository
         
