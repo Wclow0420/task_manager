@@ -42,11 +42,11 @@ def commit_and_push_db():
         subprocess.run(['git', 'commit', '-m', commit_message])
 
         # Push to the remote GitHub repository
-        subprocess.run(['git', 'push', 'origin', 'master'])
+        subprocess.run(['git', 'push', 'origin', 'main'])
 
-        print("projects.db has been committed and pushed to GitHub!")
+        st.write("projects.db has been committed and pushed to GitHub!")
     else:
-        print("projects.db file not found!")
+        st.write("projects.db file not found!")
 
 
         

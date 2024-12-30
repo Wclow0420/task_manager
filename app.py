@@ -16,7 +16,7 @@ PAGES = ["Dashboard", "Projects", "Tasks", "Accounts", "Edit Data"]
 st.sidebar.title("Task Management App")
 page = st.sidebar.selectbox("Navigate", PAGES)
 
-commit_and_push_db()
+if st.button("TEST"):commit_and_push_db()
 
 if page == "Dashboard":
     st.title("Dashboard")
