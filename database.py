@@ -4,6 +4,7 @@ import shutil
 import os
 import streamlit as st
 import git
+import subprocess
 
 def connect_db():
     return sqlite3.connect("projects.db")
@@ -19,64 +20,33 @@ def get_project_name_by_id(project_id):
         return project_name[0]  # Return the project name
     return None  # Return None if no project is found
 
+def commit_and_push_db():
+    db_path = 'projects.db'  # Path to your local projects.db file
+    username = "Wclow0420"  # Your GitHub username
+    personal_access_token = "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"  # Your GitHub PAT
 
-
-# Function to handle the download of the file
-import os
-import git
-import streamlit as st
-
-def download_and_commit_db():
-    db_path = 'projects.db'
-    repo_path = "D:/Personal Detail/Project/crypto-task/task_manager"  # Local clone path of your GitHub repository
-    username = "Wclow0420"
-    personal_access_token = "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"
-
-
-    # Use the PAT in the repo_url
-    repo_url = f"https://{username}:{personal_access_token}@github.com/Wclow0420/task_manager.git"  # GitHub URL with PAT for authentication
-
+    # Check if the projects.db file exists
     if os.path.exists(db_path):
-        # Provide download option
-        with open(db_path, "rb") as f:
-            st.download_button(
-                label="Download projects.db",
-                data=f,
-                file_name="projects.db",
-                mime="application/octet-stream"
-            )
+        # Prepare the git commands to commit and push
+        repo_url = f"https://{username}:{personal_access_token}@github.com/Wclow0420/task_manager.git"
+        
+        # Initialize a new Git repository or use an existing one
+        subprocess.run(['git', 'init'])  # Initialize git if not done already
+        subprocess.run(['git', 'remote', 'add', 'origin', repo_url])  # Add remote repository
+        
+        # Stage the database file
+        subprocess.run(['git', 'add', db_path])
+        
+        # Commit the changes
+        commit_message = "Updated projects.db"
+        subprocess.run(['git', 'commit', '-m', commit_message])
 
-        # Commit and push to GitHub
-        if st.button("Commit and Push to GitHub"):
-            try:
-                if not os.path.exists(repo_path):
-                    # Clone the repository if it doesn't exist locally
-                    st.info(f"Cloning the repository from {repo_url}")
-                    git.Repo.clone_from(repo_url, repo_path)
+        # Push to the remote GitHub repository
+        subprocess.run(['git', 'push', 'origin', 'master'])
 
-                repo = git.Repo(repo_path)
-                
-                # Stage changes
-                repo.git.add(db_path)
-                
-                # Commit with a message
-                commit_message = st.text_input("Enter commit message:", value="Updated projects.db")
-                if commit_message:
-                    repo.index.commit(commit_message)
-                    
-                    # Set up remote repository and push
-                    origin = repo.remote(name='origin')
-                    origin.push()
-                    
-                    st.success("projects.db has been committed and pushed to GitHub!")
-                else:
-                    st.error("Please provide a commit message.")
-            except git.exc.GitCommandError as e:
-                st.error(f"Git error: {e}")
-            except Exception as e:
-                st.error(f"An unexpected error occurred: {e}")
+        print("projects.db has been committed and pushed to GitHub!")
     else:
-        st.error("Database file not found!")
+        print("projects.db file not found!")
 
 
         
