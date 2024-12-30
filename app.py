@@ -51,7 +51,7 @@ if page == "Dashboard":
         tasks = [task for task in tasks if task[1] == selected_project_id]
 
     # Display tasks in columns (group multiple tasks per row)
-    num_columns = 5  # Number of tasks per row
+    num_columns = 4  # Number of tasks per row
     columns = st.columns(num_columns)
 
     for idx, task in enumerate(tasks):
@@ -60,15 +60,24 @@ if page == "Dashboard":
         # Assign each task to a column in the current row
         col = columns[idx % num_columns]
         with col:
-            # Add a white border box around each task
+            # Add a white border box around each task with a fixed height and scrollable overflow
             task_html = f"""
-            <div style="border: 2px solid white; padding: 10px; border-radius: 5px; margin: 10px;">
+            <div style="
+                border: 2px solid white; 
+                padding: 10px; 
+                border-radius: 5px; 
+                margin: 10px; 
+                height: 200px; 
+                overflow-y: auto; 
+                display: flex; 
+                flex-direction: column;
+            ">
                 <h3>{task[2]}</h3>
+                <p><a href="{task[7]}" target="_blank">Task Link</a></p>
                 <p><strong>Description:</strong> {task[3]}</p>
                 <p><strong>Frequency:</strong> {task[4]}</p>
                 <p><strong>Account:</strong> {task[6]}</p>
                 <p><strong>Project:</strong> {project_name}</p>
-                <p><a href="{task[7]}" target="_blank">Task Link</a></p>
             </div>
             """
             st.markdown(task_html, unsafe_allow_html=True)
@@ -96,18 +105,28 @@ if page == "Dashboard":
         # Assign each task to a column in the current row
         col = columns[idx % num_columns]
         with col:
-            # Add a white border box around each completed task
+            # Add a white border box around each completed task with a fixed height and scrollable overflow
             task_html = f"""
-            <div style="border: 2px solid white; padding: 10px; border-radius: 5px; margin: 10px;">
+            <div style="
+                border: 2px solid white; 
+                padding: 10px; 
+                border-radius: 5px; 
+                margin: 10px; 
+                height: 400px; 
+                overflow-y: auto; 
+                display: flex; 
+                flex-direction: column;
+            ">
                 <h3>{task[2]}</h3>
+                <p><a href="{task[7]}" target="_blank">Task Link</a></p>
                 <p><strong>Account:</strong> {task[6]}</p>
                 <p><strong>Project:</strong> {project_name}</p>
                 <p><strong>Description:</strong> {task[3]}</p>
                 <p><strong>Completed On:</strong> {task[5]}</p>
-                <p><a href="{task[7]}" target="_blank">Task Link</a></p>
             </div>
             """
             st.markdown(task_html, unsafe_allow_html=True)
+
 
 elif page == "Projects":
     st.title("Projects")
