@@ -23,7 +23,7 @@ def get_project_name_by_id(project_id):
 def commit_and_push_db():
     db_path = 'projects.db'  # Path to your local projects.db file
     username = "Wclow0420"  # Your GitHub username
-    personal_access_token = "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"  # Your GitHub PAT
+    personal_access_token = "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"  # Your GitHub PAT
 
     # Check if the projects.db file exists
     if os.path.exists(db_path):
