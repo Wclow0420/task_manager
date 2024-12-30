@@ -73,10 +73,10 @@ if page == "Dashboard":
                 flex-direction: column;
             ">
                 <h3>{task[2]}</h3>
+                <p><strong>Account:</strong> {task[6]}</p>
                 <p><a href="{task[7]}" target="_blank">Task Link</a></p>
                 <p><strong>Description:</strong> {task[3]}</p>
                 <p><strong>Frequency:</strong> {task[4]}</p>
-                <p><strong>Account:</strong> {task[6]}</p>
                 <p><strong>Project:</strong> {project_name}</p>
             </div>
             """
