@@ -3,6 +3,7 @@ import datetime
 import shutil
 import os
 import streamlit as st
+import git
 
 def connect_db():
     return sqlite3.connect("projects.db")
@@ -21,20 +22,48 @@ def get_project_name_by_id(project_id):
 
 
 # Function to handle the download of the file
-def download_db():
+def download_and_commit_db():
     db_path = 'projects.db'
-    # Check if the file exists
+    repo_url = "https://github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
+    repo_path = "."  # Local path of your repository (assumes current directory)
+
     if os.path.exists(db_path):
+        # Provide download option
         with open(db_path, "rb") as f:
-            # Returning file as download
             st.download_button(
                 label="Download projects.db",
                 data=f,
                 file_name="projects.db",
                 mime="application/octet-stream"
             )
+
+        # Commit and push to GitHub
+        if st.button("Commit and Push to GitHub"):
+            try:
+                repo = git.Repo(repo_path)
+                
+                # Stage changes
+                repo.git.add(db_path)
+                
+                # Commit with a message
+                commit_message = st.text_input("Enter commit message:", value="Updated projects.db")
+                if commit_message:
+                    repo.index.commit(commit_message)
+                
+                    # Set up remote repository and push
+                    origin = repo.remote(name='origin')
+                    origin.push()
+                    
+                    st.success("projects.db has been committed and pushed to GitHub!")
+                else:
+                    st.error("Please provide a commit message.")
+            except git.exc.GitCommandError as e:
+                st.error(f"Git error: {e}")
+            except Exception as e:
+                st.error(f"An unexpected error occurred: {e}")
     else:
         st.error("Database file not found!")
+
         
 def create_tables():
     conn = connect_db()
