@@ -24,7 +24,8 @@ def get_project_name_by_id(project_id):
 # Function to handle the download of the file
 def download_and_commit_db():
     db_path = 'projects.db'
-    repo_path = "https://github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
+    repo_path = "D:/Personal Detail/Project/crypto-task/task_manager"  # Local clone path of your GitHub repository
+    repo_url = "https://github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
 
     if os.path.exists(db_path):
         # Provide download option
@@ -39,6 +40,11 @@ def download_and_commit_db():
         # Commit and push to GitHub
         if st.button("Commit and Push to GitHub"):
             try:
+                if not os.path.exists(repo_path):
+                    # Clone the repository if it doesn't exist locally
+                    st.info(f"Cloning the repository from {repo_url}")
+                    git.Repo.clone_from(repo_url, repo_path)
+
                 repo = git.Repo(repo_path)
                 
                 # Stage changes
@@ -48,7 +54,7 @@ def download_and_commit_db():
                 commit_message = st.text_input("Enter commit message:", value="Updated projects.db")
                 if commit_message:
                     repo.index.commit(commit_message)
-                
+                    
                     # Set up remote repository and push
                     origin = repo.remote(name='origin')
                     origin.push()
