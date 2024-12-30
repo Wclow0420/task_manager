@@ -2,7 +2,7 @@ import streamlit as st
 from database import (
     create_tables, add_project, add_task, add_account,
     get_projects, get_tasks, get_accounts, mark_task_done,
-    get_done_tasks, reset_recurring_tasks, get_project_name_by_id,delete_project,delete_task,delete_account,download_db,get_tasks_two
+    get_done_tasks, reset_recurring_tasks, get_project_name_by_id,delete_project,delete_task,delete_account,download_db,get_stasks
 )
 
 # Initialize the database
@@ -199,7 +199,7 @@ elif page == "Edit Data":
 
     # Edit Task
     st.header("Edit Task")
-    tasks = get_tasks_two()
+    tasks = get_stasks()
     task_options = {task[0]: task[2] for task in tasks}  # task[2] is the task name
     selected_task_id = st.selectbox("Select Task to Edit", options=task_options.keys(), format_func=lambda x: task_options[x])
 

@@ -145,7 +145,7 @@ def get_tasks():
     conn.close()
     return tasks
 
-def get_tasks_two():
+def get_stasks():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM tasks')
