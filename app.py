@@ -2,7 +2,7 @@ import streamlit as st
 from database import (
     create_tables, add_project, add_task, add_account,
     get_projects, get_tasks, get_accounts, mark_task_done,
-    get_done_tasks, reset_recurring_tasks, get_project_name_by_id,delete_project,delete_task,delete_account,download_and_commit_db
+    get_done_tasks, reset_recurring_tasks, get_project_name_by_id,delete_project,delete_task,delete_account,commit_and_push_db
 )
 
 # Initialize the database
@@ -16,7 +16,7 @@ PAGES = ["Dashboard", "Projects", "Tasks", "Accounts", "Edit Data"]
 st.sidebar.title("Task Management App")
 page = st.sidebar.selectbox("Navigate", PAGES)
 
-download_and_commit_db()
+commit_and_push_db()
 
 if page == "Dashboard":
     st.title("Dashboard")
