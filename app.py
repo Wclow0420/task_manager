@@ -67,7 +67,7 @@ if page == "Dashboard":
                 padding: 10px; 
                 border-radius: 5px; 
                 margin: 10px; 
-                height: 200px; 
+                height: 400px; 
                 overflow-y: auto; 
                 display: flex; 
                 flex-direction: column;
