@@ -16,7 +16,7 @@ PAGES = ["Dashboard", "Projects", "Tasks", "Accounts", "Edit Data"]
 st.sidebar.title("Task Management App")
 page = st.sidebar.selectbox("Navigate", PAGES)
 
-if st.button("Download Projects.db"):download_db()
+download_db()
 
 if page == "Dashboard":
     st.title("Dashboard")
