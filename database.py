@@ -3,10 +3,6 @@ import datetime
 import shutil
 import os
 import streamlit as st
-import git
-import subprocess
-import gspread
-from oauth2client.service_account import ServiceAccountCredentials
 
 def connect_db():
     return sqlite3.connect("projects.db")
@@ -22,59 +18,23 @@ def get_project_name_by_id(project_id):
         return project_name[0]  # Return the project name
     return None  # Return None if no project is found
 
-# Function to fetch PAT from Google Sheets
-def get_pat_from_sheet(sheet_url, sheet_name, key_name):
-    # Set up the credentials and client
-    scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
-    client = gspread.authorize(creds)
-    
-    # Open the Google Sheet
-    sheet = client.open_by_url(sheet_url)
-    worksheet = sheet.worksheet(sheet_name)  # Open the specific sheet by name
-    
-    # Fetch the PAT from the sheet
-    records = worksheet.get_all_records()  # Get all rows as a list of dictionaries
-    for record in records:
-        if record.get("Key") == key_name:
-            return record.get("Value")
-    return None
 
-# Commit and push function
-def commit_and_push_db():
-    sheet_url = "https://docs.google.com/spreadsheets/d/1-svZplV3eL4-qSMfTDFP6s2W70QUGmNIapJjoHKVi2U/edit?gid=0#gid=0"
-    sheet_name = "Tokens"  # Name of the worksheet containing the PAT
-    key_name = "GITHUB_PAT"  # Key name in the sheet for the PAT
 
-    # Retrieve the PAT from Google Sheets
-    personal_access_token = get_pat_from_sheet(sheet_url, sheet_name, key_name)
-    if not personal_access_token:
-        st.write("Error: Could not retrieve GitHub PAT from Google Sheets.")
-        return
-
+# Function to handle the download of the file
+def download_db():
     db_path = 'projects.db'
-    username = "Wclow0420"  # Your GitHub username
-
-    # Check if the projects.db file exists
+    # Check if the file exists
     if os.path.exists(db_path):
-        repo_url = f"https://{username}:{personal_access_token}@github.com/Wclow0420/task_manager.git"
-
-        subprocess.run(['git', 'config', '--global', 'user.name', username])
-        subprocess.run(['git', 'config', '--global', 'user.email', 'wclow0420@gmail.com'])
-        subprocess.run(['git', 'init'])  # Initialize git if not done already
-        subprocess.run(['git', 'remote', 'remove', 'origin'], stderr=subprocess.DEVNULL)
-        subprocess.run(['git', 'remote', 'add', 'origin', repo_url])
-
-        subprocess.run(['git', 'add', db_path])  # Stage the database file
-        subprocess.run(['git', 'commit', '-m', 'Updated projects.db'])  # Commit the changes
-        subprocess.run(['git', 'push', 'origin', 'main'])  # Push to the remote repository
-
-        st.write("projects.db has been committed and pushed to GitHub!")
+        with open(db_path, "rb") as f:
+            # Returning file as download
+            st.download_button(
+                label="Download projects.db",
+                data=f,
+                file_name="projects.db",
+                mime="application/octet-stream"
+            )
     else:
-        st.write("projects.db file not found!")
-
-
-
+        st.error("Database file not found!")
         
 def create_tables():
     conn = connect_db()
