@@ -25,7 +25,7 @@ def get_project_name_by_id(project_id):
 def download_and_commit_db():
     db_path = 'projects.db'
     repo_path = "D:/Personal Detail/Project/crypto-task/task_manager"  # Local clone path of your GitHub repository
-    repo_url = "https://github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
+    repo_url = "git@github.com:Wclow0420/task_manager.git"  # Your GitHub repository URL
 
     if os.path.exists(db_path):
         # Provide download option
