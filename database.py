@@ -24,7 +24,8 @@ def get_project_name_by_id(project_id):
 # Function to handle the download of the file
 def download_and_commit_db():
     db_path = 'projects.db'
-    repo_path = "https://Wclow0420:@github.com/Wclow0420/task_manager.git"  
+    repo_url = "https://github.com/Wclow0420/task_manager.git"  # Your GitHub repository URL
+    repo_path = "."  # Local path of your repository (assumes current directory)
 
     if os.path.exists(db_path):
         # Provide download option
@@ -37,7 +38,7 @@ def download_and_commit_db():
             )
 
         # Commit and push to GitHub
-        if st.button("Commit GitHub"):
+        if st.button("Commit and Push to GitHub"):
             try:
                 repo = git.Repo(repo_path)
                 
