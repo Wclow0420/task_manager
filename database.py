@@ -145,6 +145,14 @@ def get_tasks():
     conn.close()
     return tasks
 
+def get_tasks_two():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM tasks')
+    tasks = cursor.fetchall()
+    conn.close()
+    return tasks
+
 def get_accounts():
     conn = connect_db()
     cursor = conn.cursor()
@@ -176,14 +184,14 @@ def delete_account(account_id):
 
 
 def mark_task_done(task_id):
-    today = datetime.date.today()
+    now = datetime.datetime.now()  # Use datetime to get both date and time
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute('''
         UPDATE tasks
         SET status = "Done", last_completed_date = ?
         WHERE id = ?
-    ''', (today, task_id))
+    ''', (now.strftime('%Y-%m-%d %H:%M:%S'), task_id))  # Format as DATETIME
     conn.commit()
     conn.close()
 
@@ -196,17 +204,33 @@ def get_done_tasks():
     return done_tasks
 
 def reset_recurring_tasks():
-    today = datetime.date.today()
+    now = datetime.datetime.now()
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute('''
+
+    query = '''
         UPDATE tasks
         SET status = "Pending"
-        WHERE (
+        WHERE status = "Done" AND (
             (frequency = "daily" AND (last_completed_date IS NULL OR last_completed_date < ?))
             OR (frequency = "weekly" AND (last_completed_date IS NULL OR last_completed_date < ?))
             OR (frequency = "monthly" AND (last_completed_date IS NULL OR last_completed_date < ?))
-        ) AND status = "Done"
-    ''', (today, today - datetime.timedelta(days=7), today - datetime.timedelta(days=30)))
+    '''
+    params = [
+        now - datetime.timedelta(days=1),  # Daily
+        now - datetime.timedelta(weeks=1),  # Weekly
+        now - datetime.timedelta(days=30),  # Monthly
+    ]
+
+    # Add conditions for hourly frequencies (1-23)
+    for hours in range(1, 24):
+        query += f'''
+            OR (frequency = "{hours}" AND (last_completed_date IS NULL OR last_completed_date < ?))
+        '''
+        params.append(now - datetime.timedelta(hours=hours))
+
+    query += ')'
+
+    cursor.execute(query, params)
     conn.commit()
     conn.close()

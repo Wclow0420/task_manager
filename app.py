@@ -2,13 +2,13 @@ import streamlit as st
 from database import (
     create_tables, add_project, add_task, add_account,
     get_projects, get_tasks, get_accounts, mark_task_done,
-    get_done_tasks, reset_recurring_tasks, get_project_name_by_id,delete_project,delete_task,delete_account,download_db
+    get_done_tasks, reset_recurring_tasks, get_project_name_by_id,delete_project,delete_task,delete_account,download_db,get_tasks_two
 )
 
 # Initialize the database
 create_tables()
 reset_recurring_tasks()
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 
 # Multi-page app structure
 PAGES = ["Dashboard", "Projects", "Tasks", "Accounts", "Edit Data"]
@@ -153,7 +153,7 @@ elif page == "Tasks":
     selected_project = st.selectbox("Project", options=project_options.keys(), format_func=lambda x: project_options[x])
     task_name = st.text_input("Task Name")
     task_description = st.text_area("Task Description")
-    task_frequency = st.selectbox("Frequency", ["daily", "weekly", "monthly","One Time"])
+    task_frequency = st.selectbox("Frequency", ["daily", "weekly", "monthly","One Time","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"])
     task_account = st.selectbox("Account", account_options)
     task_link = st.text_input("Task Link")
     if st.button("Add Task"):
@@ -199,7 +199,7 @@ elif page == "Edit Data":
 
     # Edit Task
     st.header("Edit Task")
-    tasks = get_tasks()
+    tasks = get_tasks_two()
     task_options = {task[0]: task[2] for task in tasks}  # task[2] is the task name
     selected_task_id = st.selectbox("Select Task to Edit", options=task_options.keys(), format_func=lambda x: task_options[x])
 
@@ -209,7 +209,7 @@ elif page == "Edit Data":
         if task:
             task_name = st.text_input("Task Name", value=task[2])
             task_description = st.text_area("Task Description", value=task[3])
-            task_frequency = st.selectbox("Frequency", options=["daily", "weekly", "monthly", "One Time"], index=["daily", "weekly", "monthly", "One Time"].index(task[4]))
+            task_frequency = st.selectbox("Frequency", options=["daily", "weekly", "monthly", "One Time","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"], index=["daily", "weekly", "monthly", "One Time","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23"].index(task[4]))
             task_account = st.selectbox("Account", options=[account[1] for account in get_accounts()], index=[account[1] for account in get_accounts()].index(task[6]))
             task_link = st.text_input("Task Link", value=task[7])
 
