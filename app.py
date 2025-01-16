@@ -8,7 +8,24 @@ from database import (
 # Initialize the database
 create_tables()
 reset_recurring_tasks()
+dark = '''
+<style>
+    .stApp {
+    background-color: #121212;
+    }
+</style>
+'''
 
+light = '''
+<style>
+    .stApp {
+    background-color: white;
+    }
+</style>
+'''
+
+# st.set_page_config(layout="wide")
+st.markdown(dark, unsafe_allow_html=True)
 # Multi-page app structure
 PAGES = ["Dashboard", "Projects", "Tasks", "Accounts", "Edit Data"]
 
