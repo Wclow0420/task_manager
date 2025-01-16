@@ -8,7 +8,7 @@ from database import (
 # Initialize the database
 create_tables()
 reset_recurring_tasks()
-st.set_page_config(page_title="Dark Mode App", page_icon="🌙", layout="wide", theme="dark")
+st.set_page_config(theme="dark")
 
 # Multi-page app structure
 PAGES = ["Dashboard", "Projects", "Tasks", "Accounts", "Edit Data"]
